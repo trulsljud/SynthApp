@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+
+	<ImageView
+		android:id="@+id/tangent2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_toRightOf="@+id/tangent1"
+		android:onClick="onClick"
+		android:src="@drawable/key" />
+
+	<ImageView
+		android:id="@+id/tangent3"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_toRightOf="@+id/tangent2"
+		android:onClick="onClick"
+		android:src="@drawable/key" />
+
+	<ImageView
+		android:id="@+id/tangent4"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_toRightOf="@+id/tangent3"
+		android:onClick="onClick"
+		android:src="@drawable/key" />
+
+	<ImageView
+		android:id="@+id/tangent5"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_toRightOf="@+id/tangent4"
+		android:onClick="onClick"
+		android:src="@drawable/key" />
+
+	<ImageView
+		android:id="@+id/tangent6"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_toRightOf="@+id/tangent5"
+		android:onClick="onClick"
+		android:src="@drawable/key" />
+
+	<ImageView
+		android:id="@+id/tangent7"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_toRightOf="@+id/tangent6"
+		android:onClick="onClick"
+		android:src="@drawable/key" />
+
+	<ImageView
+		android:id="@+id/tangent8"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_toRightOf="@+id/tangent7"
+		android:onClick="onClick"
+		android:src="@drawable/key" />
+	<ImageView android:id="@+id/tangent1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:layout_marginLeft="80dp" android:onClick="onClick" android:src="@drawable/key"/>
+
+</RelativeLayout>
