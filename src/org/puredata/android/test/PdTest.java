@@ -32,6 +32,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
@@ -65,6 +68,11 @@ public class PdTest extends Activity implements OnClickListener,
 	private EditText msg;
 	private TextView logs;
 	private SeekBar frequency;
+	private Button recordButton;
+	private Button stopButton;
+	
+	private AudioRecord recorder;
+	private short[] buffer = new short[44100];
 
 	private PdService pdService = null;
 
@@ -171,6 +179,10 @@ public class PdTest extends Activity implements OnClickListener,
 			}
 		};
 
+		recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, 22050,
+				AudioFormat.CHANNEL_CONFIGURATION_MONO,
+				AudioFormat.ENCODING_PCM_16BIT,
+				buffer.length);
 		frequency.setOnSeekBarChangeListener(listener);
 	};
 
@@ -178,6 +190,7 @@ public class PdTest extends Activity implements OnClickListener,
 	protected void onDestroy() {
 		super.onDestroy();
 		cleanup();
+		recorder.release();
 	}
 
 	@Override
@@ -192,6 +205,10 @@ public class PdTest extends Activity implements OnClickListener,
 		setContentView(R.layout.main);
 		play = (ImageView) findViewById(R.id.imageView1);
 		play.setOnClickListener(this);
+		recordButton = (Button) findViewById(R.id.recordButton);
+		recordButton.setOnClickListener(this);
+		stopButton = (Button) findViewById(R.id.stopButton);
+		stopButton.setOnClickListener(this);
 	}
 
 	private void initPd() {
@@ -274,6 +291,18 @@ public class PdTest extends Activity implements OnClickListener,
 			PdBase.sendFloat("freq", sliderVal);
 			Log.i("Max: ", Integer.toString(bar.getMax()));
 			PdBase.sendBang("tone");
+			break;
+		case R.id.recordButton:
+			recorder.startRecording();
+			//int readbytes = recorder.read(buffer, 0, buffer.length);
+			recorder.read(buffer, 0, buffer.length);
+			recorder.stop();
+			for (int i = 0; i < buffer.length; i++) {
+				PdBase.sendFloat("micinput", buffer[i]);
+			}
+			break;
+		case R.id.stopButton:
+			recorder.stop();
 			break;
 		default:
 			break;
