@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import org.puredata.android.io.AudioParameters;
 import org.puredata.android.service.PdPreferences;
 import org.puredata.android.service.PdService;
 import org.puredata.core.PdBase;
@@ -59,11 +60,12 @@ import android.widget.Toast;
 public class PdTest extends Activity implements OnClickListener,
 		OnEditorActionListener,
 		SharedPreferences.OnSharedPreferenceChangeListener {
+	
+	//testa commit
 
 	private static final String TAG = "Pd Test";
 	
 	private float sliderVal;
-
 	private ImageView play;
 	private EditText msg;
 	private TextView logs;
@@ -71,8 +73,11 @@ public class PdTest extends Activity implements OnClickListener,
 	private Button recordButton;
 	private Button stopButton;
 	
-	private AudioRecord recorder;
-	private short[] buffer = new short[44100];
+	private Thread audioThread = null;
+	//private AudioRecord recorder = null;
+	private boolean isRecording;
+	private int samplerate;
+	private short[] buffer = new short[4096];
 
 	private PdService pdService = null;
 
@@ -178,19 +183,14 @@ public class PdTest extends Activity implements OnClickListener,
 
 			}
 		};
-
-		recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, 22050,
-				AudioFormat.CHANNEL_CONFIGURATION_MONO,
-				AudioFormat.ENCODING_PCM_16BIT,
-				buffer.length);
 		frequency.setOnSeekBarChangeListener(listener);
-	};
+		samplerate = AudioParameters.suggestSampleRate();
+	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		cleanup();
-		recorder.release();
 	}
 
 	@Override
@@ -227,6 +227,25 @@ public class PdTest extends Activity implements OnClickListener,
 			if (patchFile != null)
 				patchFile.delete();
 		}
+	}
+	
+	private void startAudioRecording() {
+//		recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, samplerate,
+//				AudioFormat.CHANNEL_CONFIGURATION_MONO,
+//				AudioFormat.ENCODING_PCM_16BIT,
+//				buffer.length);
+//		recorder.startRecording();
+//		recorder.read(buffer, 0, buffer.length);
+//		recorder.stop();
+//		recorder.release();
+//		recorder = null;
+//		for (int i = 0; i < buffer.length; i++) {
+//			PdBase.sendFloat("micinput", buffer[i]);
+//		}
+	}
+	
+	private void stopAudioRecording() {
+		
 	}
 
 	private void startAudio() {
@@ -293,16 +312,12 @@ public class PdTest extends Activity implements OnClickListener,
 			PdBase.sendBang("tone");
 			break;
 		case R.id.recordButton:
-			recorder.startRecording();
-			//int readbytes = recorder.read(buffer, 0, buffer.length);
-			recorder.read(buffer, 0, buffer.length);
-			recorder.stop();
-			for (int i = 0; i < buffer.length; i++) {
-				PdBase.sendFloat("micinput", buffer[i]);
-			}
+			Log.i("record", "tryckt record");
+			startAudioRecording();
 			break;
 		case R.id.stopButton:
-			recorder.stop();
+			Log.i("stop", "tryckt stop");
+			stopAudioRecording();
 			break;
 		default:
 			break;
