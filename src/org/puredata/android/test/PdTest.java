@@ -61,7 +61,7 @@ public class PdTest extends Activity implements OnClickListener,
 		OnEditorActionListener,
 		SharedPreferences.OnSharedPreferenceChangeListener {
 	
-	//testa commit
+	//testa commita
 
 	private static final String TAG = "Pd Test";
 	
